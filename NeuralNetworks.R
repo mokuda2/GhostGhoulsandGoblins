@@ -17,7 +17,7 @@ test <- vroom("test.csv")
 nn_recipe <- recipe(type ~ ., data=train) %>%
   update_role(id, new_role="id") %>%
   step_lencode_glm(color, outcome = vars(type)) %>%
-  step_dummy(all_nominal_predictors()) %>%
+  step_normalize(all_numeric_predictors()) %>%
   step_range(all_numeric_predictors(), min=0, max=1) #scale to [0,1]
 
 prep <- prep(nn_recipe)
