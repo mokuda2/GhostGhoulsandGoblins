@@ -48,7 +48,7 @@ tuned_nn %>% collect_metrics() %>%
   ggplot(aes(x=hidden_units, y=mean)) + geom_line()
 
 # Predict
-bestTune <- CV_results %>%
+bestTune <- tuned_nn %>%
   select_best("accuracy")
 
 # Finalize workflow and predict
