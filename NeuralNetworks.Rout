@@ -56,7 +56,7 @@ The following objects are masked from ‘package:readr’:
 ✖ dplyr::lag()      masks stats::lag()
 ✖ yardstick::spec() masks vroom::spec(), readr::spec()
 ✖ recipes::step()   masks stats::step()
-• Dig deeper into tidy modeling with R at https://www.tmwr.org
+• Use suppressPackageStartupMessages() to eliminate package startup messages
 > library(embed)
 > library(discrim)
 
@@ -128,7 +128,7 @@ dbl (5): id, bone_length, rotting_flesh, hair_length, has_soul
 +   add_recipe(nn_recipe) %>%
 +   add_model(nn_model)
 > 
-> nn_tuneGrid <- grid_regular(hidden_units(range=c(1, 10)),
+> nn_tuneGrid <- grid_regular(hidden_units(range=c(1, 100)),
 +                             levels=3)
 > 
 > folds <- vfold_cv(train, v = 3, repeats=1)
@@ -137,18 +137,18 @@ dbl (5): id, bone_length, rotting_flesh, hair_length, has_soul
 +   tune_grid(resamples=folds,
 +             grid=nn_tuneGrid,
 +             metrics=metric_set(accuracy))
-2023-11-06 13:57:04.148521: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+2023-11-06 14:31:29.947191: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2023-11-06 13:57:10.280458: I tensorflow/core/common_runtime/process_util.cc:146] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
-1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 1ms/step
+2023-11-06 14:31:32.549889: I tensorflow/core/common_runtime/process_util.cc:146] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
 1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 14ms/step
-1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 12ms/step
+1/4 [======>.......................] - ETA: 0s3/4 [=====================>........] - ETA: 0s4/4 [==============================] - 0s 18ms/step
+1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 11ms/step
+1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 13ms/step
 1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 2ms/step
-1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 16ms/step
-1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 4ms/step
-1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 9ms/step
+1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 8ms/step
 1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 14ms/step
-1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 9ms/step
+1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 11ms/step
+1/4 [======>.......................] - ETA: 0s4/4 [==============================] - 0s 10ms/step
 > 
 > tuned_nn %>% collect_metrics() %>%
 +   filter(.metric=="accuracy") %>%
@@ -164,7 +164,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 +   fit(data=train)
 > 
 > ggg_predictions <- predict(final_wf, new_data = test, type="class")
- 1/17 [>.............................] - ETA: 0s 8/17 [=============>................] - ETA: 0s17/17 [==============================] - 0s 4ms/step
+ 1/17 [>.............................] - ETA: 0s 9/17 [==============>...............] - ETA: 0s17/17 [==============================] - 0s 4ms/step
 > 
 > ggg_predictions$type <- ggg_predictions$.pred_class
 > ggg_predictions$id <- test$id
@@ -174,5 +174,5 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 > write.csv(ggg_final, "nn.csv", row.names = F)
 > 
 > proc.time()
-    user   system  elapsed 
- 450.266 1002.692   73.344 
+   user  system elapsed 
+555.761 889.846  44.393 
