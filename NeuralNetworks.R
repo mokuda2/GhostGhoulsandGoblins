@@ -1,6 +1,13 @@
 library(tidyverse)
 library(vroom)
 library(tidymodels)
+library(embed)
+library(discrim)
+library(naivebayes)
+library(kknn)
+library(kernlab)
+library(themis)
+library(nnet)
 
 train <- vroom("train.csv")
 # train <- train %>%
