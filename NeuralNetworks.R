@@ -33,7 +33,7 @@ nn_wf <- workflow() %>%
   add_recipe(nn_recipe) %>%
   add_model(nn_model)
 
-nn_tuneGrid <- grid_regular(hidden_units(range=c(1, 10)),
+nn_tuneGrid <- grid_regular(hidden_units(range=c(1, 100)),
                             levels=3)
 
 folds <- vfold_cv(train, v = 3, repeats=1)
