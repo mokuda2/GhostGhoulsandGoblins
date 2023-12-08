@@ -12,7 +12,7 @@ library(bonsai)
 library(lightgbm)
 library(dbarts)
 
-train <- vroom("./GhostGhoulsandGoblins/train.csv")
+train <- vroom("./STAT\ 348/GhostGhoulsandGoblins/train.csv")
 # train <- train %>%
 #   select(-c("id"))
 test <- vroom("./GhostGhoulsandGoblins/test.csv")
@@ -215,7 +215,6 @@ test <- vroom("./GhostGhoulsandGoblins/test.csv")
 
 ggg_recipe <- recipe(type ~ ., data=train) %>%
   step_lencode_glm(color, outcome = vars(type)) %>%
-  step_dummy(all_nominal_predictors()) %>%
   step_normalize(all_numeric_predictors())
 # step_mutate_at(all_numeric_predictors(), fn=factor)
 
@@ -262,3 +261,4 @@ ggg_final <- ggg_predictions %>%
   select(id, type)
 
 write.csv(ggg_final, "./GhostGhoulsandGoblins/naivebayes.csv", row.names = F)
+
